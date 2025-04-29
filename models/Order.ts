@@ -9,6 +9,7 @@ export interface IOrder extends Document {
   orderDate: Date;
   deliveryDate: Date;
   notes: string;
+  status: "pending" | "in_progress" | "completed" | "delivered" | "cancelled";
   createdAt: Date;
   updatedAt: Date;
   _id: string;
@@ -28,6 +29,12 @@ const OrderSchema: Schema = new Schema(
     orderDate: { type: Date, required: true, default: Date.now },
     deliveryDate: { type: Date, required: true },
     notes: { type: String, required: false },
+    status: {
+      type: String,
+      required: true,
+      enum: ["pending", "in_progress", "completed", "delivered", "cancelled"],
+      default: "pending",
+    },
   },
   {
     timestamps: true,
