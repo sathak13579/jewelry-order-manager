@@ -64,15 +64,18 @@ const OrderForm: React.FC<OrderFormProps> = ({ order, isEditing = false }) => {
       };
 
       const url = isEditing 
-        ? `/api/orders/${order?._id}` 
+        ? `/api/orders/${order?._id}`
         : '/api/orders';
       
       const method = isEditing ? 'PUT' : 'POST';
+
+      const token = localStorage.getItem('token');
 
       const res = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(orderData),
       });

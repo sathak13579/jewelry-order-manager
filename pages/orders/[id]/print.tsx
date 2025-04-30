@@ -21,7 +21,12 @@ export default function PrintReceipt() {
 
     const fetchOrder = async () => {
       try {
-        const res = await fetch(`/api/orders/${id}`);
+        const token = localStorage.getItem('token');
+        const res = await fetch(`/api/orders/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         
         if (!res.ok) {
           throw new Error('Failed to fetch order details');

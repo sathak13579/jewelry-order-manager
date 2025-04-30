@@ -1,20 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
-import { Order } from '../types/Order';
+import { IOrder } from '@/models/Order';
 
 interface OrderCardProps {
-  order: Order;
+  order: IOrder;
 }
 
 const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   // Helper function to format date
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+  const formatDate = (date: string) => {
+    const dateObj = new Date(date);
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
-    }).format(date);
+    }).format(dateObj);
   };
 
   // Helper function to get status color
@@ -45,14 +45,14 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
       <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
         <div className="flex justify-between items-center">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
-            Order #{order.orderNumber || order._id?.substring(0, 8)}
+            Order #{order._id.substring(0, 8)}
           </h3>
           <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.status)}`}>
             {formatStatus(order.status)}
           </span>
         </div>
         <p className="mt-1 max-w-2xl text-sm text-gray-500">
-          Placed on {formatDate(order.createdAt)}
+          Placed on {formatDate(order.orderDate)}
         </p>
       </div>
       <div className="px-4 py-4 sm:px-6">
@@ -64,21 +64,21 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
             </dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">Contact</dt>
+            <dt className="text-sm font-medium text-gray-500">Order Type</dt>
             <dd className="mt-1 text-sm text-gray-900">
-              {order.customerEmail}
+              {order.orderType.charAt(0).toUpperCase() + order.orderType.slice(1)}
             </dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">Items</dt>
+            <dt className="text-sm font-medium text-gray-500">Item Type</dt>
             <dd className="mt-1 text-sm text-gray-900">
-              {order.items.length} {order.items.length === 1 ? 'item' : 'items'}
+              {order.itemType}
             </dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">Total</dt>
+            <dt className="text-sm font-medium text-gray-500">Quoted Price</dt>
             <dd className="mt-1 text-sm text-gray-900">
-              ${order.totalAmount?.toFixed(2) || 'N/A'}
+              ${order.quotedPrice.toFixed(2)}
             </dd>
           </div>
         </dl>
